@@ -4,6 +4,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Miner = require(ReplicatedStorage.Shared.Classes.Miner)
 
 function MinerServiceServer.init()
+    warn("MinerServiceServer init")
+
     Miner.new()
 end
 
