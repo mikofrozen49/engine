@@ -1,7 +1,7 @@
 local modulesFolder = script.Parent.Modules
 
 local HUDController = require(modulesFolder.HUDController)
-local MinerServiceClient = require(modulesFolder.MinerServiceClient)
+local BuildingServiceClient = require(modulesFolder.BuildingServiceClient)
 
 HUDController:init()
-MinerServiceClient:init()
+BuildingServiceClient:init()

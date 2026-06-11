@@ -1,33 +1,31 @@
-local HUDController = {}
+local Players = game:GetService("Players")
 
 local modules = script.Parent
+local BuildingServiceClient = require(modules.BuildingServiceClient)
 
-local MinerServiceClient = require(modules.MinerServiceClient)
+local player = Players.LocalPlayer
+local HUDGui = player:WaitForChild("PlayerGui"):WaitForChild("HUD")
+local rootFrame = HUDGui:WaitForChild("RootFrame")
 
-function HUDController:init()
-    local player = game.Players.LocalPlayer
-    local playerGui = player:WaitForChild("PlayerGui")
+local HUDController = {}
 
-    self.HUDGui = playerGui:WaitForChild("HUD")
-    self.rootFrame = self.HUDGui:WaitForChild("RootFrame")
-
-    self:connectBuildButton()
+function HUDController.init()
+    HUDController.connectBuildButton()
 
     warn("HUDController init")
 end
 
-function HUDController:toggleHUD()
-    self.HUDGui.Enabled = not self.HUDGui.Enabled
+function HUDController.toggleHUD()
+    HUDGui.Enabled = not HUDGui.Enabled
 end
 
-function HUDController:connectBuildButton()
-    local buildFrame = self.rootFrame:WaitForChild("BuildFrame")
+function HUDController.connectBuildButton()
+    local buildFrame = rootFrame:WaitForChild("BuildFrame")
     local buildButton = buildFrame:WaitForChild("BuildButton")
 
     buildButton.MouseButton1Click:Connect(function()
-        print("BuildButton pressed")
-        self:toggleHUD()
-        MinerServiceClient:enterBuildMode()
+        HUDController.toggleHUD()
+        BuildingServiceClient.enterBuildMode()
     end)
 end
 

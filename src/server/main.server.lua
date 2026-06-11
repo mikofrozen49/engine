@@ -2,6 +2,8 @@ local SSS = script.Parent
 
 local modulesFolder = SSS.Modules
 
-local MinerServiceServer = require(modulesFolder.MinerServiceServer)
+local BuildingServiceServer = require(modulesFolder.BuildingServiceServer)
+local PlayerDataService = require(modulesFolder.PlayerDataService)
 
-MinerServiceServer.init()
+BuildingServiceServer.init()
+PlayerDataService.init()
