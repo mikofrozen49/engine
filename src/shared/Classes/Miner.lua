@@ -1,7 +1,8 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Workspace = game:GetService("Workspace")
+local Workspace         = game:GetService("Workspace")
 
-local minerModel = ReplicatedStorage.Models.Miner
+local minerModel   = ReplicatedStorage.Models.Miner
+local minersFolder = Workspace.Miners
 
 local Miner = {}
 Miner.__index = Miner
@@ -10,18 +11,16 @@ function Miner.new(config)
     local self = setmetatable({}, Miner)
 
     self.position = config.position
-    self.id = config.id
 
-    self:spawnMiner()
+    self:spawn()
 
     return self
 end
 
-function Miner:spawnMiner()
+function Miner:spawn()
     local clone = minerModel:Clone()
     clone.Position = self.position
-    clone:SetAttribute("Id", self.id)
-    clone.Parent = Workspace
+    clone.Parent = minersFolder
 end
 
 return Miner

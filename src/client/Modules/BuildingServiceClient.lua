@@ -1,10 +1,11 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
+local Players           = game:GetService("Players")
 
-local player = Players.LocalPlayer
-local mouse = player:GetMouse()
-local isBuildMode = false
+local player         = Players.LocalPlayer
+local mouse          = player:GetMouse()
+local isBuildMode    = false
 local buildingRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("BuildingRemote")
+local selectedBuildingType
 
 local BuildingServiceClient = {}
 
@@ -25,12 +26,17 @@ function BuildingServiceClient.connectMouseInput()
             math.ceil(hitPosition.z)
         )
 
-        buildingRemote:FireServer(position)
+        buildingRemote:FireServer(position, selectedBuildingType)
     end)
 end
 
-function BuildingServiceClient.enterBuildMode()
+function BuildingServiceClient.enterBuildMode(BuildingType)
     isBuildMode = true
+    selectedBuildingType = BuildingType
+end
+
+function BuildingServiceClient.exitBuildMode()
+    isBuildMode = false
 end
 
 return BuildingServiceClient

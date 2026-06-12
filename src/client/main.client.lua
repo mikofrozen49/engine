@@ -1,7 +1,7 @@
 local modulesFolder = script.Parent.Modules
 
-local HUDController = require(modulesFolder.HUDController)
+local GuiController         = require(modulesFolder.GuiController)
 local BuildingServiceClient = require(modulesFolder.BuildingServiceClient)
 
-HUDController:init()
-BuildingServiceClient:init()
+GuiController.init()
+BuildingServiceClient.init()

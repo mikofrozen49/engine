@@ -1,38 +1,30 @@
-local Players = game:GetService("Players")
-
 local playersData = {}
 
 local PlayerDataService = {}
 
-function PlayerDataService.init()
-    Players.PlayerAdded:Connect(function(player)
-        playersData[player.UserId] = {
-            cash = 0,
-            nextId = 0,
-            buildingData = {},
-            buildingObjects = {}
-        }
-    end)
+function PlayerDataService.init(player)
+    playersData[player.UserId] = {
+        cash = 1000,
+        nextId = 0,
+        buildings = {}
+    }
+
+    warn("PlayerDataService init")
 end
 
-function PlayerDataService.addBuldingData(player, data)
-    local playerData = playersData[player.UserId]
-
-    playerData.nextId += 1
-    local id = playerData.nextId
-
-    playerData.buildingData[id] = data
-
-    print(playerData)
+function PlayerDataService.getCash(player)
+    return playersData[player.UserId].cash
 end
 
-function PlayerDataService.addBuildingObject(player, data)
-    local playerData = playersData[player.UserId]
+function PlayerDataService.addBuilding(player, object)
+    local data = playersData[player.UserId]
 
-    local id = playerData.nextId
-    data.id = id
+    data.nextId += 1
+    local id = data.nextId
 
-    playerData.buildingObjects[id] = data
+    data.buildings[id] = object
+
+    print(data)
 end
 
 return PlayerDataService
