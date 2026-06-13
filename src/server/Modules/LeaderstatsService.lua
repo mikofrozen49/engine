@@ -17,4 +17,11 @@ function LeaderstatsService.init(player)
     warn("LeaderstatsService init")
 end
 
+function LeaderstatsService.updateLeaderstats(player)
+    local leaderstats = player.leaderstats
+    local cash = leaderstats.Cash
+
+    cash.Value = PlayerDataService.getCash(player)
+end
+
 return LeaderstatsService

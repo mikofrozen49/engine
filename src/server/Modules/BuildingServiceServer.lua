@@ -10,6 +10,7 @@ for _, module in ipairs(classesFolder:GetChildren()) do
     classes[module.Name] = require(module)
 end
 
+local LeaderstatsService = require(script.Parent.LeaderstatsService)
 local PlayerDataService = require(modulesFolder.PlayerDataService)
 local BuildingsData     = require(dataFolder.BuildingsData)
 
@@ -18,20 +19,26 @@ local buildingRemote = ReplicatedStorage.Remotes.BuildingRemote
 local BuildingServiceServer = {}
 
 function BuildingServiceServer.init()
-    BuildingServiceServer.connectBuildingRemote()
+    connectBuildingRemote()
 
     warn("BuildingServiceServer init")
 end
 
-function BuildingServiceServer.connectBuildingRemote()
+function connectBuildingRemote()
     buildingRemote.OnServerEvent:Connect(function(player, position, buildingType)
-        if PlayerDataService.getCash(player) < BuildingsData.getPrice(buildingType) then return end
+        local cash = PlayerDataService.getCash(player)
+        local price = BuildingsData.getPrice(buildingType)
+
+        if cash < price then return end
 
         local object = classes[buildingType].new({
             position = position
         })
-
         PlayerDataService.addBuilding(player, object)
+
+        PlayerDataService.spendCash(player, price)
+
+        LeaderstatsService.updateLeaderstats(player)
     end)
 end
 

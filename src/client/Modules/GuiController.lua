@@ -13,17 +13,17 @@ local buildingGui = PlayerGui:WaitForChild("Building")
 local GuiController = {}
 
 function GuiController.init()
-    GuiController.connectHUDButtons()
-    GuiController.connectBuildingButtons()
+    connectHUDButtons()
+    connectBuildingButtons()
 
     warn("GuiController init")
 end
 
-local function toggleGui(gui)
+function toggleGui(gui)
     gui.Enabled = not gui.Enabled
 end
 
-function GuiController.connectHUDButtons()
+function connectHUDButtons()
     local buildFrame = HUDGui:WaitForChild("RootFrame"):WaitForChild("BuildFrame")
 
     for _, button in ipairs(buildFrame:GetChildren()) do
@@ -38,7 +38,7 @@ function GuiController.connectHUDButtons()
     end
 end
 
-function GuiController.connectBuildingButtons()
+function connectBuildingButtons()
     local exitButton = buildingGui:WaitForChild("Exit")
 
     exitButton.MouseButton1Click:Connect(function() 

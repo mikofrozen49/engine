@@ -16,6 +16,10 @@ function PlayerDataService.getCash(player)
     return playersData[player.UserId].cash
 end
 
+function PlayerDataService.spendCash(player, amount)
+    playersData[player.UserId].cash -= amount
+end
+
 function PlayerDataService.addBuilding(player, object)
     local data = playersData[player.UserId]
 
