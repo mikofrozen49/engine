@@ -19,7 +19,9 @@ end
 
 function Factory:spawn()
     local clone = factoryModel:Clone()
-    clone.Position = self.position
+    
+    clone:PivotTo(CFrame.new(self.position))
+
     clone.Parent = factoriesFolder
 end
 

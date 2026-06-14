@@ -6,6 +6,8 @@ local RunService        = game:GetService("RunService")
 local player = Players.LocalPlayer
 local mouse  = player:GetMouse()
 
+local GridMath = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Math"):WaitForChild("GridMath"))
+
 local buildingRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("BuildingRemote")
 
 local modelsFolder = ReplicatedStorage:WaitForChild("Models")
@@ -18,7 +20,6 @@ end
 local isBuildMode = false
 local selectedBuildingType
 local ghostModel
-local FIXED_Y = 1
 local renderSteppedConnection
 
 local BuildingServiceClient = {}
@@ -42,28 +43,37 @@ function BuildingServiceClient.exitBuildMode()
     hideGhostModel()
 end
 
-function getGridPosition(position)
-    local gridSize = 2
+function getGridPosition()
+    local hitPos = mouse.Hit.Position
 
-    local gridPosition = Vector3.new(
-        math.floor(position.X / gridSize + 0.5) * gridSize,
-        FIXED_Y,
-        math.floor(position.Z / gridSize + 0.5) * gridSize
+    return GridMath.snapToGrid(hitPos.X, hitPos.Z)
+end
+
+function getFinalPosition()
+    local basePart = models[selectedBuildingType]:WaitForChild("Base")
+    local gridPos = getGridPosition()
+
+    return Vector3.new(
+        gridPos.X,
+        basePart.Size.Y / 2,
+        gridPos.Y
     )
-
-    return gridPosition
 end
 
 function showGhostModel()
     ghostModel = models[selectedBuildingType]:Clone()
-    ghostModel.CanCollide = false
+
+    for _, part in ipairs(ghostModel:GetChildren()) do
+        part.CanCollide = false
+        part.Transparency = 0.5
+        part.BrickColor = BrickColor.new("White")
+    end
+
     ghostModel.Parent = Workspace
 
     renderSteppedConnection = RunService.RenderStepped:Connect(function()
-        local hitPosition = mouse.Hit.Position
-        local position = getGridPosition(hitPosition)
+        ghostModel:PivotTo(CFrame.new(getFinalPosition()))
 
-        ghostModel.Position = position
         ghostModel.Parent = Workspace
     end)
 end
@@ -79,10 +89,7 @@ function connectMouseInput()
     mouse.Button1Down:Connect(function()
         if not isBuildMode then return end
 
-        local hitPosition = mouse.Hit.Position
-        local position = getGridPosition(hitPosition)
-
-        buildingRemote:FireServer(position, selectedBuildingType)
+        buildingRemote:FireServer(getFinalPosition(), selectedBuildingType)
     end)
 end
 

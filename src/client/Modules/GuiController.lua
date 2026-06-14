@@ -13,6 +13,8 @@ local buildingGui = PlayerGui:WaitForChild("Building")
 local GuiController = {}
 
 function GuiController.init()
+    HUDGui.Enabled = true
+
     connectHUDButtons()
     connectBuildingButtons()
 
@@ -48,6 +50,5 @@ function connectBuildingButtons()
         BuildingServiceClient.exitBuildMode()
     end)
 end
-
 
 return GuiController

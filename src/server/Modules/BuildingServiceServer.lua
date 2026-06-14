@@ -16,6 +16,8 @@ local BuildingsData     = require(dataFolder.BuildingsData)
 
 local buildingRemote = ReplicatedStorage.Remotes.BuildingRemote
 
+local occupiedGrid = {}
+
 local BuildingServiceServer = {}
 
 function BuildingServiceServer.init()
@@ -26,6 +28,8 @@ end
 
 function connectBuildingRemote()
     buildingRemote.OnServerEvent:Connect(function(player, position, buildingType)
+        if occupiedGrid[position.X] and occupiedGrid[position.X][position.Z] then return end
+
         local cash = PlayerDataService.getCash(player)
         local price = BuildingsData.getPrice(buildingType)
 
@@ -39,6 +43,9 @@ function connectBuildingRemote()
         PlayerDataService.spendCash(player, price)
 
         LeaderstatsService.updateLeaderstats(player)
+
+        occupiedGrid[position.X] = occupiedGrid[position.X] or {}
+        occupiedGrid[position.X][position.Z] = true
     end)
 end
 

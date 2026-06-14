@@ -1,9 +1,9 @@
 local BuildingsData = {
-    Miner = {
-        price = 100
+    Mine = {
+        price = 50
     },
     Factory = {
-        price = 200
+        price = 50
     }
 }
 
